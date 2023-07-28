@@ -1,0 +1,45 @@
+.box {
+    background-color: rgb(205, 205, 205);
+}
+
+.cardmat{
+    display: inline-flex;
+}
+
+.card-content{
+    width: 290px
+}
+
+.card-action button{
+    margin-right: 15px;
+}
+
+.container > label{
+    font-size: 20px;
+    color: black;
+}
+
+
+.box-direita{
+    margin-top: 40px;
+    width: 30%;
+    height: 100%;
+    float: left;
+    
+}
+
+.box-esquerda{
+    width: 70%;
+    height: 100%;
+    float: left;
+}
+
+#pesquisa{
+    width: 50%;
+    margin-left: 11px;
+}
+
+#pesquisa::placeholder{
+    color: rgb(95, 93, 93);
+}
+
