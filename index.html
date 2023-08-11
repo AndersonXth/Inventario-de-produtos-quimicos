@@ -18,16 +18,16 @@
         <form id="formReagentes" class="container">
 
             <label for="reagente">Reagente:</label>
-            <input id="reagente" required>
+            <input id="reagente" autocomplete="off" required>
 
             <label for="numero">Numero:</label>
-            <input id="numero" required>
+            <input id="numero" autocomplete="off" required>
 
             <label for="validade">Validade:</label>
-            <input id="validade" required>
+            <input id="validade" autocomplete="off" required>
 
             <label for="quantidade">Quantidade:</label>
-            <input id="quantidade" required>
+            <input id="quantidade" autocomplete="off" required>
 
             <label>
                 <input type="checkbox" id="gramas" value="g" class="uncheckable">
@@ -37,7 +37,8 @@
                 <input type="checkbox" id="mililitros" value="ml" class="uncheckable">
                 <span>ml</span>
             </label><br><br>
-            <button type="submit" class="waves-effect waves-light btn-small">Adicionar</button>
+            <button type="submit" class="waves-effect waves-light btn-small" id="submitCard">Adicionar</button>
+            <button class="waves-effect waves-light btn-small" id="exportButton">Exportar Dados</button>
         </form>
     </div>
     <div class="box-esquerda">

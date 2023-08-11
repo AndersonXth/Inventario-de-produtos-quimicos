@@ -4,6 +4,7 @@ const novoReagenteInput = document.getElementById("reagente");
 const novaNumeroInput = document.getElementById("numero");
 const novaValidadeInput = document.getElementById("validade");
 const novaQuantidadeInput = document.getElementById("quantidade");
+const exportar = document.getElementById('exportButton')
 
 let cards = [];
 let selectedUnit = '';
@@ -44,6 +45,7 @@ formCar.addEventListener("submit", (event) => {
     saveCards();
     createCardElement(card);
     selectedUnit = '';
+    limparCampos()
 });
 
 function createCardElement(card) {
@@ -111,10 +113,10 @@ function showEditForm(card, cardElement) {
     });
 
     editForm.innerHTML = `
-        <input type="text" name="novo_reagente" placeholder="Novo reagente" value="${card.reagente}" required>
-        <input type="text" name="novo_numero" placeholder="Nova numero" value="${card.numero}" required>
-        <input type="text" name="novo_validade" placeholder="Nova validade" value="${card.validade}" required>
-        <input type="text" name="novo_quantidade" placeholder="Nova quantidade" value="${card.quantidade}" required>
+        <input type="text" name="novo_reagente" placeholder="Novo reagente" autocomplete="off" value="${card.reagente}" required>
+        <input type="text" name="novo_numero" placeholder="Nova numero" autocomplete="off" value="${card.numero}" required>
+        <input type="text" name="novo_validade" placeholder="Nova validade" autocomplete="off" value="${card.validade}" required>
+        <input type="text" name="novo_quantidade" placeholder="Nova quantidade" autocomplete="off" value="${card.quantidade}" required>
         <button type="submit" class="waves-effect waves-light btn-small">Salvar</button>
     `;
 
@@ -132,15 +134,22 @@ function loadCards(searchText = "") {
         cards = JSON.parse(storedCards);
         listaReagentes.innerHTML = ""; 
 
-        cards.filter((card) => {
-            
+        const storedRelatorio = localStorage.getItem('relatorio');
+        if (storedRelatorio) {
+            relatorio = JSON.parse(storedRelatorio);
+        }
+
+        const filteredCards = cards.filter((card) => {
             const searchTerm = searchText.toLowerCase();
             const reagente = card.reagente.toLowerCase();
             const numero = card.numero;
             return reagente.includes(searchTerm) || numero.includes(searchTerm);
-        }).forEach(createCardElement);
+        });
+
+        filteredCards.forEach(createCardElement);
     }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
     loadCards();
@@ -175,6 +184,38 @@ function checkbox() {
                 alert("Por favor, selecione uma unidade (gramas ou mililitros).");
             }
         });
+    });
+}
+
+function exportToCSV(data, fileName) {
+    const csvContent = "data:text/csv;charset=utf-8," + data.map(row => Object.values(row).join(';')).join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+document.getElementById("exportButton").addEventListener("click", () => {
+    if (relatorio.length > 0) {
+        exportToCSV(relatorio, "relatorio.csv");
+    } else {
+        alert("No data to export.");
+    }
+});
+
+function limparCampos() {
+    novoReagenteInput.value = '';
+    novaNumeroInput.value = '';
+    novaValidadeInput.value = '';
+    novaQuantidadeInput.value = '';
+    selectedUnit = '';
+    const checkboxes = document.querySelectorAll('.uncheckable');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
     });
 }
 

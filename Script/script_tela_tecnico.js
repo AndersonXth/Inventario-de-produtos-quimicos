@@ -7,22 +7,24 @@ function loadCards(searchText = "") {
         cards = JSON.parse(storedCards);
         listaReagentes.innerHTML = ""; 
 
-    const storedRelatorio = localStorage.getItem('relatorio')
-    if(storedRelatorio){
-        relatorio = JSON.parse(storedRelatorio)
-    }
+        const storedRelatorio = localStorage.getItem('relatorio');
+        if (storedRelatorio) {
+            relatorio = JSON.parse(storedRelatorio);
+        }
 
-        cards.filter((card) => {
-            
+        const filteredCards = cards.filter((card) => {
             const searchTerm = searchText.toLowerCase();
             const reagente = card.reagente.toLowerCase();
             const numero = card.numero;
             return reagente.includes(searchTerm) || numero.includes(searchTerm);
-        }).forEach(createCardElement);
+        });
+
+        filteredCards.forEach((card,index) => createCardElement(card,index));
     }
 }
 
-function createCardElement(card) {
+
+function createCardElement(card,index) {
     const cardmat = document.createElement("div");
     cardmat.classList.add("cardmat");
     cardmat.innerHTML = `
@@ -46,12 +48,12 @@ function createCardElement(card) {
     listaReagentes.appendChild(cardmat);
 
     cardmat.querySelector(".btn_consumo").addEventListener("click", () => {
-        showEditForm(card,cardmat);
+        showEditForm(card,cardmat,index);
     });
 
 }
 
-function showEditForm(card, cardElement) {
+function showEditForm(card, cardElement,index) {
     const cardContent = cardElement.querySelector(".card-content");
 
     const editForm = document.createElement("form");
@@ -63,7 +65,14 @@ function showEditForm(card, cardElement) {
         const motivo = editForm.elements["motivo"].value;
         const id = editForm.elements["id"].value;
 
+        if(!isValidNumber(consumo)){
+            alert('Por favor insira somente a quantidade do que foi consumido, não é necessário colocar a unidade')
+            return
+        }
+
         const nova_quantidade = (card.quantidade - consumo)
+
+        cards[index].quantidade = nova_quantidade
 
         const dados = {
             consumo,
@@ -87,15 +96,25 @@ function showEditForm(card, cardElement) {
     });
 
     editForm.innerHTML = `
-        <input type="text" name="consumo" placeholder="Consumo" value="" required>
-        <input type="text" name="data_uso" placeholder="Data_Uso" value="" required>
-        <input type="text" name="motivo" placeholder="Motivo" value="" required>
-        <input type="text" name="id" placeholder="ID" value="" required>
+        <input type="text" name="consumo" autocomplete="off" placeholder="Consumo em g ou ml" value="" required>
+        <input type="text" name="data_uso" autocomplete="off" placeholder="Data_Uso" value="" required>
+        <input type="text" name="motivo" autocomplete="off" placeholder="Motivo" value="" required>
+        <input type="text" name="id" autocomplete="off" placeholder="ID" value="" required>
         <button type="submit" class="waves-effect waves-light btn-small">Salvar</button>
+        <button class="waves-effect waves-light btn-small" id='closeConsumo'>Cancelar</button>
     `;
 
     cardContent.innerHTML = "";
     cardContent.appendChild(editForm);
+
+    const cancelButton = editForm.querySelector('#closeConsumo')
+    cancelButton.addEventListener('click',() => {
+        cardContent.innerHTML = `
+            <span class="card-title">${card.reagente}</span>
+            <p>Numero: ${card.numero}</p>
+            <p>Validade: ${card.validade}</p>
+            <h5>Quantidade: ${card.quantidade + card.unidade}</h5>`
+    })
 }
 
 
@@ -114,3 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
         loadCards(searchText); 
     });
 });
+
+function isValidNumber(value) {
+    return +value === parseInt(value) && isFinite(value);
+}
+
