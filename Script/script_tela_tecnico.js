@@ -76,6 +76,7 @@ function showEditForm(card, cardElement,index) {
 
         const dados = {
             consumo,
+            unidade: card.unidade,
             data_uso,
             motivo,
             id,
