@@ -201,9 +201,25 @@ function exportToCSV(data, fileName) {
 
 document.getElementById("exportButton").addEventListener("click", () => {
     if (relatorio.length > 0) {
-        exportToCSV(relatorio, "relatorio.csv");
+        exportToCSV(relatorio, "Relatorio.csv");
     } else {
-        alert("No data to export.");
+        alert("Sem dados na base.");
+    }
+});
+
+document.getElementById("exportBackup").addEventListener("click", () => {
+    if (cards.length > 0) {
+        const dados = cards.map(card => {
+            return {
+                Reagente: card.reagente,
+                Numero: card.numero,
+                Validade: card.validade,
+                Quantidade: card.quantidade + card.unidade
+            };
+        });
+        exportToCSV(dados, "Backup.csv");
+    } else {
+        alert("Sem dados na base");
     }
 });
 
