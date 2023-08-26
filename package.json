@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "mysql": "^2.18.1"
+    "materialize-css": "^1.0.0-rc.2"
   }
 }
