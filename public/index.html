@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+              
+    
+    <title>Almox de reagentes</title>
+
+</head>
+<body background="imagens/fundo1.png">
+    <div class="box-direita">
+        <form id="formReagentes" class="container">
+
+            <label for="reagente">Reagente:</label>
+            <input id="reagente" autocomplete="off" required>
+
+            <label for="numero">Numero:</label>
+            <input id="numero" autocomplete="off" required>
+
+            <label for="validade">Validade:</label>
+            <input id="validade" autocomplete="off" required>
+
+            <label for="quantidade">Quantidade:</label>
+            <input id="quantidade" autocomplete="off" required>
+
+            <label>
+                <input type="checkbox" id="gramas" value="g" class="uncheckable">
+                <span>gramas</span>
+            </label><br>
+            <label>
+                <input type="checkbox" id="mililitros" value="ml" class="uncheckable">
+                <span>ml</span>
+            </label><br><br>
+            <div class="botoes">
+                <button type="submit" class="waves-effect waves-light btn-small" id="submitCard">Adicionar</button><br>
+                <button class="waves-effect waves-light btn-small" style="margin: 10px 0px;" id="exportButton">Exportar Dados</button><br>
+                <button class="waves-effect waves-light btn-small" style="margin: 10px 0px;" id="exportBackup">Backup Mensal</button>
+                <button class="waves-effect waves-light btn-small" id="limparRelatorio">Limpar Base Relatorio</button>
+            </div>
+        </form>
+    </div>
+    <div class="box-esquerda">
+        <h3>Reagentes Disponíveis:</h3>
+        <input type="search" id="pesquisa" placeholder="Pesquisar...">
+        <div id="listaReagentes">
+        
+        </div>
+    </div>
+    <script src="Script/script.js"></script>
+</body>
+</html>
