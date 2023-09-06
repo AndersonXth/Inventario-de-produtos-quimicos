@@ -97,7 +97,7 @@ function showEditForm(card, cardElement,index) {
         <input type="text" name="data_uso" autocomplete="off" placeholder="Data_Uso" value="" required>
         <input type="text" name="motivo" autocomplete="off" placeholder="Motivo" value="" required>
         <input type="text" name="id" autocomplete="off" placeholder="ID" value="" required>
-        <button type="submit" class="waves-effect waves-light btn-small">Salvar</button>
+        <button type="submit" class="waves-effect waves-light btn-small" id='salvarConsumo'>Salvar</button>
         <button class="waves-effect waves-light btn-small" id='closeConsumo'>Cancelar</button>
     `;
 
@@ -112,6 +112,7 @@ function showEditForm(card, cardElement,index) {
             <p>Validade: ${card.validade}</p>
             <h5>Quantidade: ${card.quantidade + card.unidade}</h5>`
     })
+
 }
 
 function saveCards() {
@@ -151,5 +152,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function isValidNumber(value) {
-    return +value === parseInt(value) && isFinite(value);
+    return +value === parseFloat(value) && isFinite(value);
 }

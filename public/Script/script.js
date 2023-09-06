@@ -266,6 +266,13 @@ function clearRelatorio() {
   }
   
 document.getElementById('limparRelatorio').addEventListener('click',() =>{
-    clearRelatorio()
-    console.log('base limpada')
+    const texto = 'Você tem certeza que deseja limpar a base de dados do relatorio ?'
+    if(confirm(texto) == true)
+    {clearRelatorio()
+    alert('base limpada')
+    }
+    else{alert('limpeza cancelada')}
+    
+
+    
 })
