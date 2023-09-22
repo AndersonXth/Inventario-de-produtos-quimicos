@@ -16,16 +16,12 @@ const port2 = process.env.PORT || 3001;
 const db = new sqlite3.Database('cards.db');
 const dbRelatorio = new sqlite3.Database('relatorio.db');
 
-
-// Serve static files from the 'public' directory for both pages
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve the first HTML page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Serve the second HTML page on a different port
 app.get('/tela_do_tecnico', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'tela_do_tecnico.html'));
 });
@@ -38,7 +34,6 @@ app.listen(port2, () => {
   console.log(`Server for Page 2 is running on port ${port2}`);
 });
 
-// ...
 db.serialize(() => {
   db.run('CREATE TABLE IF NOT EXISTS cards (reagente TEXT, numero TEXT, validade TEXT, quantidade TEXT, unidade TEXT)');
 });
