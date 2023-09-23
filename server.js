@@ -1,11 +1,3 @@
-// abrir servidor local
-// const http = require('http')
-// const fs = require('fs')
-// const express = require('express')
-// const app = express()
-// app.use(express.static('public'))
-// app.listen(8081,() => {console.log('servidor esta rodando na porta 8081')})
-
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -39,7 +31,7 @@ db.serialize(() => {
 });
 
 dbRelatorio.serialize(() => {
-  dbRelatorio.run('CREATE TABLE IF NOT EXISTS relatorio (consumo TEXT, unidade TEXT, data_uso TEXT, motivo TEXT, id TEXT)');
+  dbRelatorio.run('CREATE TABLE IF NOT EXISTS relatorio (reagente TEXT, consumo TEXT, unidade TEXT, data_uso TEXT, motivo TEXT, id TEXT)');
 });
 
 app.use(express.json());
@@ -70,10 +62,10 @@ app.get('/loadCards', (req, res) => {
 app.post('/saveRelatorio', (req, res) => {
   const { relatorio } = req.body;
   dbRelatorio.serialize(() => {
-    const stmt = dbRelatorio.prepare('INSERT INTO relatorio VALUES (?, ?, ?, ?, ?)');
+    const stmt = dbRelatorio.prepare('INSERT INTO relatorio VALUES (?, ?, ?, ?, ?, ?)');
     relatorio.forEach(dados => {
       try {
-        stmt.run(dados.consumo, dados.unidade, dados.data_uso, dados.motivo, dados.id);
+        stmt.run(dados.reagente, dados.consumo, dados.unidade, dados.data_uso, dados.motivo, dados.id);
       } catch (error) {
         console.error('Error inserting data into relatorio:', error);
       }

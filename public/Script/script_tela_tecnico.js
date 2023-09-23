@@ -39,8 +39,21 @@ function createCardElement(card,index) {
             </div>
         </div>
     `;
-
+    
     listaReagentes.appendChild(cardmat);
+
+    cardmat.addEventListener('submit',(event) => {
+        function apagarCardmat(){
+            if(card.quantidade==0){
+                cardmat.remove()
+                cards = cards.filter((c) => c !== card);
+                saveCards()
+            } else{
+                return
+            }}
+        apagarCardmat()
+    })
+    
 
     cardmat.querySelector(".btn_consumo").addEventListener("click", () => {
         showEditForm(card,cardmat,index);
@@ -70,6 +83,7 @@ function showEditForm(card, cardElement,index) {
         cards[index].quantidade = nova_quantidade
 
         const dados = {
+            reagente: card.reagente,
             consumo,
             unidade: card.unidade,
             data_uso,
@@ -86,7 +100,7 @@ function showEditForm(card, cardElement,index) {
             <h5>Quantidade: ${nova_quantidade+card.unidade}</h5>
         `;
         cardContent.appendChild(editForm);
-
+        
         saveCards();
         saveRelatorio()
         cardContent.removeChild(editForm);
