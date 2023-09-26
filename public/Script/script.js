@@ -81,7 +81,6 @@ function createCardElement(card) {
     });
 
     cardmat.querySelector(".btn_edit").addEventListener("click", () => {
-        apagarCardmat()
         showEditForm(card, cardmat);
     });
 

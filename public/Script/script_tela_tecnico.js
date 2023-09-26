@@ -78,10 +78,6 @@ function showEditForm(card, cardElement,index) {
             return
         }
 
-        const nova_quantidade = (card.quantidade - consumo)
-
-        cards[index].quantidade = nova_quantidade
-
         const dados = {
             reagente: card.reagente,
             consumo,
@@ -91,20 +87,42 @@ function showEditForm(card, cardElement,index) {
             id,
         };
 
-        relatorio.push(dados);
+        const texto = `
+            Seu consumo é o seguinte: 
+            CONSUMO = ${dados.consumo+card.unidade}
+            DATA = ${dados.data_uso}
+            MOTIVO = ${dados.motivo}
+            ID = ${dados.id} 
+
+            Tem certeza que as informações acima estao corretas ??
+        `;
+
+        if(confirm(texto) == true){
+            const nova_quantidade = (card.quantidade - consumo)
+            cards[index].quantidade = nova_quantidade
+            relatorio.push(dados);
+            saveRelatorio();
+        }else{
+            const nova_quantidade = card.quantidade
+            cards[index].quantidade = nova_quantidade
+            alert('Preenchimento do Consumo Cancelado')
+        }
+
+        
+        cardContent.appendChild(editForm);
+        saveCards();
+        cardContent.removeChild(editForm);
 
         cardContent.innerHTML = `
             <span class="card-title">${card.reagente}</span>
             <p>Numero: ${card.numero}</p>
             <p>Validade: ${card.validade}</p>
-            <h5>Quantidade: ${nova_quantidade+card.unidade}</h5>
+            <h5>Quantidade: ${card.quantidade+card.unidade}</h5>
         `;
-        cardContent.appendChild(editForm);
-        
-        saveCards();
-        saveRelatorio()
-        cardContent.removeChild(editForm);
+
     });
+
+    
 
     editForm.innerHTML = `
         <input type="text" name="consumo" autocomplete="off" placeholder="Consumo em g ou ml" value="" required>
