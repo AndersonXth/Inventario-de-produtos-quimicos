@@ -8,18 +8,18 @@ function loadCards(searchText = '') {
         cards = data;
         listaReagentes.innerHTML = '';
         const filteredCards = cards.filter(card => {
-          const searchTerm = searchText.toLowerCase();
           const reagente = card.reagente.toLowerCase();
           const numero = card.numero;
-          return reagente.includes(searchTerm) || numero.includes(searchTerm);
+          return reagente.includes(searchText) || numero.includes(searchText);
         });
-        filteredCards.forEach(createCardElement);
+        filteredCards.forEach((card) => createCardElement(card));
       })
       .catch(error => console.error(error));
-  }
+}
 
 
-function createCardElement(card,index) {
+
+function createCardElement(card) {
     const cardmat = document.createElement("div");
     cardmat.classList.add("cardmat");
     cardmat.innerHTML = `
@@ -30,7 +30,7 @@ function createCardElement(card,index) {
                         <span class="card-title">${card.reagente}</span>
                         <p>Numero: ${card.numero}</p>
                         <p>Validade: ${card.validade}</p>
-                        <h5>Quantidade: ${card.quantidade+card.unidade}</h5>
+                        <h5>Quantidade: ${card.quantidade + card.unidade}</h5>
                     </div>
                     <div class="card-action">
                         <button class="waves-effect waves-light btn-small btn_consumo">Consumo</button>
@@ -39,29 +39,29 @@ function createCardElement(card,index) {
             </div>
         </div>
     `;
-    
+
     listaReagentes.appendChild(cardmat);
 
-    cardmat.addEventListener('submit',(event) => {
-        function apagarCardmat(){
-            if(card.quantidade==0){
+    cardmat.addEventListener('submit', (event) => {
+        function apagarCardmat() {
+            if (card.quantidade == 0) {
                 cardmat.remove()
                 cards = cards.filter((c) => c !== card);
                 saveCards()
-            } else{
+            } else {
                 return
-            }}
+            }
+        }
         apagarCardmat()
     })
-    
 
     cardmat.querySelector(".btn_consumo").addEventListener("click", () => {
-        showEditForm(card,cardmat,index);
+        showEditForm(card, cardmat);
     });
-
 }
 
-function showEditForm(card, cardElement,index) {
+
+function showEditForm(card, cardElement) {
     const cardContent = cardElement.querySelector(".card-content");
 
     const editForm = document.createElement("form");
@@ -94,17 +94,17 @@ function showEditForm(card, cardElement,index) {
             MOTIVO = ${dados.motivo}
             ID = ${dados.id} 
 
-            Tem certeza que as informações acima estao corretas ??
+            Tem certeza que as informações acima estão corretas ??
         `;
 
         if(confirm(texto) == true){
             const nova_quantidade = (card.quantidade - consumo)
-            cards[index].quantidade = nova_quantidade
+            card.quantidade = nova_quantidade
             relatorio.push(dados);
             saveRelatorio();
         }else{
             const nova_quantidade = card.quantidade
-            cards[index].quantidade = nova_quantidade
+            card.quantidade = nova_quantidade
             alert('Preenchimento do Consumo Cancelado')
         }
 
@@ -125,7 +125,7 @@ function showEditForm(card, cardElement,index) {
     
 
     editForm.innerHTML = `
-        <input type="text" name="consumo" autocomplete="off" placeholder="Consumo em g ou ml" value="" required>
+        <input type="text" name="consumo" autocomplete="off" placeholder="Consumo em g, ml ou kits" value="" required>
         <input type="text" name="data_uso" autocomplete="off" placeholder="Data_Uso" value="" required>
         <input type="text" name="motivo" autocomplete="off" placeholder="Motivo" value="" required>
         <input type="text" name="id" autocomplete="off" placeholder="ID" value="" required>

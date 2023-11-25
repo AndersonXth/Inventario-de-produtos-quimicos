@@ -31,7 +31,7 @@ formCar.addEventListener("submit", (event) => {
     }
 
     if (!selectedUnit) {
-        alert("Por favor, selecione uma unidade (gramas ou mililitros).");
+        alert("Por favor, selecione uma unidade (gramas,mililitros ou kits).");
         return;
     }
 
@@ -154,7 +154,7 @@ function loadCards(searchText = '') {
           const numero = card.numero;
           return reagente.includes(searchTerm) || numero.includes(searchTerm);
         });
-        filteredCards.forEach(createCardElement);
+        filteredCards.forEach((card, index) => createCardElement(card, index));
       })
       .catch(error => console.error(error));
   }
