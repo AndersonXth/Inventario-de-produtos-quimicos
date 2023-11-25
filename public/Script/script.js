@@ -196,8 +196,8 @@ function checkbox() {
     });
 }
 
-function exportToCSV(data, fileName) {
-    const csvContent = "data:text/csv;charset=utf-8," + data.map(row => Object.values(row).join(';')).join('\n');
+function exportToCSV(data, fileName, header) {
+    const csvContent = "data:text/csv;charset=utf-8," + [header.join(';')].concat(data.map(row => Object.values(row).join(';'))).join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -212,9 +212,10 @@ document.getElementById("exportButton").addEventListener("click", () => {
       .then(response => response.json())
       .then(relatorioData => {
         if (relatorioData.length > 0) {
-          exportToCSV(relatorioData, "Relatorio.csv");
+            const header = ["reagente","quantidade","unidade","data","motivo","ID"]
+            exportToCSV(relatorioData, "Relatorio.csv",header);
         } else {
-          alert("Sem dados no relatório.");
+            alert("Sem dados no relatório.");
         }
       })
       .catch(error => console.error(error));
@@ -223,6 +224,7 @@ document.getElementById("exportButton").addEventListener("click", () => {
 
 document.getElementById("exportBackup").addEventListener("click", () => {
     if (cards.length > 0) {
+        const header = ["reagente","número","validade","quantidade"]
         const dados = cards.map(card => {
             return {
                 Reagente: card.reagente,
@@ -231,7 +233,7 @@ document.getElementById("exportBackup").addEventListener("click", () => {
                 Quantidade: card.quantidade + card.unidade
             };
         });
-        exportToCSV(dados, "Backup.csv");
+        exportToCSV(dados, "Backup.csv",header);
     } else {
         alert("Sem dados na base");
     }
